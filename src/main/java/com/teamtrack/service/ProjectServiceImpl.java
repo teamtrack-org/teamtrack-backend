@@ -40,6 +40,14 @@ public class ProjectServiceImpl implements ProjectService {
         return mapToDto(project);
     }
 
+    @Override
+    public void deleteProject(Long id) {
+        if (!projectRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Project not found with id: " + id);
+        }
+        projectRepository.deleteById(id);
+    }
+
     private ProjectResponseDto mapToDto(Project project) {
         ProjectResponseDto dto = new ProjectResponseDto();
         dto.setId(project.getId());
