@@ -1,9 +1,13 @@
 package com.teamtrack.service;
 
-import com.teamtrack.entity.Project;
+import com.teamtrack.dto.ProjectRequestDto;
+import com.teamtrack.dto.ProjectResponseDto;
+
 import java.util.List;
 
 public interface ProjectService {
-    Project createProject(Project project);
-    List<Project> getAllProjects();
+
+    ProjectResponseDto createProject(ProjectRequestDto dto);
+
+    List<ProjectResponseDto> getAllProjects();
 }

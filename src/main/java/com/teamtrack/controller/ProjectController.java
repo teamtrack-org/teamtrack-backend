@@ -1,28 +1,35 @@
 package com.teamtrack.controller;
 
-import com.teamtrack.entity.Project;
+import com.teamtrack.dto.ProjectRequestDto;
+import com.teamtrack.dto.ProjectResponseDto;
 import com.teamtrack.service.ProjectService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("/api/projects")
+@RequiredArgsConstructor
 public class ProjectController {
 
     private final ProjectService projectService;
 
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
-    }
-
+    // CREATE PROJECT
     @PostMapping
-    public Project createProject(@RequestBody Project project) {
-        return projectService.createProject(project);
+    public ResponseEntity<ProjectResponseDto> createProject(
+            @RequestBody ProjectRequestDto dto
+    ) {
+        ProjectResponseDto createdProject = projectService.createProject(dto);
+        return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
 
+    // GET ALL PROJECTS
     @GetMapping
-    public List<Project> getAllProjects() {
-        return projectService.getAllProjects();
+    public ResponseEntity<List<ProjectResponseDto>> getAllProjects() {
+        List<ProjectResponseDto> projects = projectService.getAllProjects();
+        return ResponseEntity.ok(projects);
     }
 }
