@@ -3,6 +3,9 @@ package com.teamtrack.controller;
 import com.teamtrack.dto.ProjectRequestDto;
 import com.teamtrack.dto.ProjectResponseDto;
 import com.teamtrack.service.ProjectService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,11 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @Operation(summary = "Create a new project", description = "Creates a new project with the given details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Project created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided")
+    })
     @PostMapping
     public ResponseEntity<ProjectResponseDto> createProject(
             @Valid @RequestBody ProjectRequestDto dto) {
@@ -29,6 +37,11 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.createProject(dto));
     }
 
+    @Operation(summary = "Get project by ID", description = "Retrieves a project by its unique identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Project found"),
+            @ApiResponse(responseCode = "404", description = "Project not found")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ProjectResponseDto> getProjectById(@PathVariable Long id) {
         return ResponseEntity.ok(projectService.getProjectById(id));
