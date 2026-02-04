@@ -3,6 +3,7 @@ package com.teamtrack.service;
 import com.teamtrack.dto.ProjectRequestDto;
 import com.teamtrack.dto.ProjectResponseDto;
 import com.teamtrack.entity.Project;
+import com.teamtrack.exception.ResourceNotFoundException;
 import com.teamtrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponseDto createProject(ProjectRequestDto dto) {
-
         // DTO → Entity
         Project project = new Project();
         project.setName(dto.getName());
@@ -28,19 +28,16 @@ public class ProjectServiceImpl implements ProjectService {
         Project savedProject = projectRepository.save(project);
 
         // Entity → DTO
-        ProjectResponseDto response = new ProjectResponseDto();
-        response.setId(savedProject.getId());
-        response.setName(savedProject.getName());
-        response.setDescription(savedProject.getDescription());
-
-        return response;
+        return mapToDto(savedProject);
     }
 
     @Override
-    public List<ProjectResponseDto> getAllProjects() {
-        return projectRepository.findAll().stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+    public ProjectResponseDto getProjectById(Long id) {
+
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+
+        return mapToDto(project);
     }
 
     private ProjectResponseDto mapToDto(Project project) {
