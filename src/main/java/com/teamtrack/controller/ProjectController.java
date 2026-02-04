@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +49,24 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
 
+    @Operation(summary = "Update project", description = "Updates an existing project by its unique identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Project updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input provided"),
+            @ApiResponse(responseCode = "404", description = "Project not found")
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectResponseDto> updateProject(
+            @PathVariable Long id,
+            @Valid @RequestBody ProjectRequestDto dto) {
+        return ResponseEntity.ok(projectService.updateProject(id, dto));
+    }
+
+    @Operation(summary = "Delete project", description = "Deletes a project by its unique identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Project deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Project not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         projectService.deleteProject(id);

@@ -41,6 +41,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ProjectResponseDto updateProject(Long id, ProjectRequestDto dto) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+
+        project.setName(dto.getName());
+        project.setDescription(dto.getDescription());
+
+        Project updatedProject = projectRepository.save(project);
+        return mapToDto(updatedProject);
+    }
+
+    @Override
     public void deleteProject(Long id) {
         if (!projectRepository.existsById(id)) {
             throw new ResourceNotFoundException("Project not found with id: " + id);
