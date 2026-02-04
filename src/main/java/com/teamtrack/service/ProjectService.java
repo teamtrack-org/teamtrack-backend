@@ -10,5 +10,7 @@ public interface ProjectService {
 
     ProjectResponseDto getProjectById(Long id);
 
+    ProjectResponseDto updateProject(Long id, ProjectRequestDto dto);
+
     void deleteProject(Long id);
 }
