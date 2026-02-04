@@ -6,10 +6,9 @@ import com.teamtrack.entity.Project;
 import com.teamtrack.exception.ResourceNotFoundException;
 import com.teamtrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,25 +18,24 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponseDto createProject(ProjectRequestDto dto) {
-        // DTO → Entity
         Project project = new Project();
         project.setName(dto.getName());
         project.setDescription(dto.getDescription());
-
-        // Save
         Project savedProject = projectRepository.save(project);
-
-        // Entity → DTO
         return mapToDto(savedProject);
     }
 
     @Override
     public ProjectResponseDto getProjectById(Long id) {
-
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
-
         return mapToDto(project);
+    }
+
+    @Override
+    public Page<ProjectResponseDto> getAllProjects(Pageable pageable) {
+        return projectRepository.findAll(pageable)
+                .map(this::mapToDto);
     }
 
     @Override

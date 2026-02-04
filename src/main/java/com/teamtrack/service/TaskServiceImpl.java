@@ -7,10 +7,9 @@ import com.teamtrack.entity.Task;
 import com.teamtrack.exception.ResourceNotFoundException;
 import com.teamtrack.repository.ProjectRepository;
 import com.teamtrack.repository.TaskRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -38,13 +37,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponseDto> getTasksByProjectId(Long projectId) {
+    public Page<TaskResponseDto> getTasksByProjectId(Long projectId, Pageable pageable) {
         if (!projectRepository.existsById(projectId)) {
             throw new ResourceNotFoundException("Project not found with id: " + projectId);
         }
-        return taskRepository.findByProjectId(projectId).stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+        return taskRepository.findByProjectId(projectId, pageable)
+                .map(this::mapToDto);
     }
 
     @Override
