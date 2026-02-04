@@ -69,6 +69,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public TaskResponseDto updateTaskStatus(Long id, Task.Status status) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+
+        task.setStatus(status);
+        Task updatedTask = taskRepository.save(task);
+        return mapToDto(updatedTask);
+    }
+
+    @Override
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
             throw new ResourceNotFoundException("Task not found with id: " + id);

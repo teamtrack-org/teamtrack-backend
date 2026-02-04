@@ -13,5 +13,7 @@ public interface TaskService {
 
     TaskResponseDto updateTask(Long id, TaskRequestDto dto);
 
+    TaskResponseDto updateTaskStatus(Long id, com.teamtrack.entity.Task.Status status);
+
     void deleteTask(Long id);
 }

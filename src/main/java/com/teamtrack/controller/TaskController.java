@@ -2,6 +2,7 @@ package com.teamtrack.controller;
 
 import com.teamtrack.dto.TaskRequestDto;
 import com.teamtrack.dto.TaskResponseDto;
+import com.teamtrack.dto.TaskStatusUpdateDto;
 import com.teamtrack.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -65,6 +66,19 @@ public class TaskController {
             @PathVariable Long id,
             @Valid @RequestBody TaskRequestDto dto) {
         return ResponseEntity.ok(taskService.updateTask(id, dto));
+    }
+
+    @Operation(summary = "Update task status", description = "Updates the status of an existing task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task status updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid status provided"),
+            @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+
+    public ResponseEntity<TaskResponseDto> updateTaskStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody TaskStatusUpdateDto dto) {
+        return ResponseEntity.ok(taskService.updateTaskStatus(id, dto.getStatus()));
     }
 
     @Operation(summary = "Delete task", description = "Deletes a task by its unique identifier")
