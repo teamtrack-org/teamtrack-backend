@@ -6,8 +6,6 @@ import com.teamtrack.dto.ProjectResponseDto;
 import java.util.List;
 
 public interface ProjectService {
-
     ProjectResponseDto createProject(ProjectRequestDto dto);
-
-    List<ProjectResponseDto> getAllProjects();
+    ProjectResponseDto getProjectById(Long id);
 }

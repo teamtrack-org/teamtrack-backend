@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProjectRequestDto {
 
-    @NotBlank
-    @Size(min = 3, max = 100)
+    @NotBlank(message = "Project name cannot be empty")
+    @Size(min = 3, max = 100, message = "Project name must be between 3 and 100 characters")
     private String name;
 
-    @Size(max = 500)
+    @Size(max = 500, message = "Description cannot exceed 500 characters")
     private String description;
 }
