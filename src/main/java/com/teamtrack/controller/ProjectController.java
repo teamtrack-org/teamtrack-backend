@@ -7,15 +7,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -35,8 +30,16 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<ProjectResponseDto> createProject(
             @Valid @RequestBody ProjectRequestDto dto) {
-
         return ResponseEntity.ok(projectService.createProject(dto));
+    }
+
+    @Operation(summary = "Get all projects", description = "Retrieves a paginated list of all projects")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Projects retrieved successfully")
+    })
+    @GetMapping
+    public ResponseEntity<Page<ProjectResponseDto>> getAllProjects(Pageable pageable) {
+        return ResponseEntity.ok(projectService.getAllProjects(pageable));
     }
 
     @Operation(summary = "Get project by ID", description = "Retrieves a project by its unique identifier")

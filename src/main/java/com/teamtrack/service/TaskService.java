@@ -2,12 +2,13 @@ package com.teamtrack.service;
 
 import com.teamtrack.dto.TaskRequestDto;
 import com.teamtrack.dto.TaskResponseDto;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TaskService {
     TaskResponseDto createTask(Long projectId, TaskRequestDto dto);
 
-    List<TaskResponseDto> getTasksByProjectId(Long projectId);
+    Page<TaskResponseDto> getTasksByProjectId(Long projectId, Pageable pageable);
 
     TaskResponseDto getTaskById(Long id);
 
