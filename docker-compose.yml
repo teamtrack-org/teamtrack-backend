@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: teamtrack-postgres
+    environment:
+      POSTGRES_DB: teamtrack
+      POSTGRES_USER: teamtrack
+      POSTGRES_PASSWORD: teamtrack123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - teamtrack-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U teamtrack"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Spring Boot Application
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: teamtrack-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/teamtrack
+      SPRING_DATASOURCE_USERNAME: teamtrack
+      SPRING_DATASOURCE_PASSWORD: teamtrack123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - teamtrack-network
+    restart: unless-stopped
+
+  # pgAdmin (Optional - for database management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: teamtrack-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@teamtrack.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - teamtrack-network
+    restart: unless-stopped
+
+networks:
+  teamtrack-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
