@@ -1,6 +1,7 @@
 package com.teamtrack.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,4 +18,7 @@ public class ProjectRequestDto {
 
     @Size(max = 500, message = "Description cannot exceed 500 characters")
     private String description;
+
+    @NotNull(message = "Owner ID cannot be null")
+    private Long ownerId;
 }

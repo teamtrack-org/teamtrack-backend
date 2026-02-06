@@ -1,4 +1,4 @@
-package com.teamtrack.teamtrack_backend;
+package com.teamtrack;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

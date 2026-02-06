@@ -4,17 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectResponseDto {
-
+public class TaskSummaryDto {
     private Long id;
-    private String name;
-    private String description;
-    private UserDto owner;
-    private List<TaskSummaryDto> tasks;
-
+    private String title;
+    private String status;
 }

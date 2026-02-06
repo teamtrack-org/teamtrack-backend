@@ -3,6 +3,7 @@ package com.teamtrack.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teamtrack.dto.ProjectRequestDto;
 import com.teamtrack.dto.ProjectResponseDto;
+import com.teamtrack.dto.UserDto;
 import com.teamtrack.service.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.teamtrack.TeamtrackBackendApplication;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.test.context.ContextConfiguration;
+
 @WebMvcTest(ProjectController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@ContextConfiguration(classes = TeamtrackBackendApplication.class)
 class ProjectControllerTest {
 
     @Autowired
@@ -42,12 +49,16 @@ class ProjectControllerTest {
 
     @BeforeEach
     void setUp() {
+        UserDto ownerDto = new UserDto(1L, "test@example.com", "USER");
+
         responseDto = new ProjectResponseDto();
         responseDto.setId(1L);
         responseDto.setName("Test Project");
         responseDto.setDescription("Description");
+        responseDto.setOwner(ownerDto);
+        responseDto.setTasks(new java.util.ArrayList<>());
 
-        requestDto = new ProjectRequestDto("Test Project", "Description");
+        requestDto = new ProjectRequestDto("Test Project", "Description", 1L);
     }
 
     @Test
