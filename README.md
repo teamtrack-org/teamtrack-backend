@@ -248,10 +248,5 @@ For detailed API documentation, visit: http://localhost:8080/swagger-ui.html
 
 ---
 
-## 👨‍💻 Author
-Developed as part of CSE 332 – Software Engineering course.
-
----
-
 ## 📝 License
 This project is for educational purposes.
