@@ -2,7 +2,6 @@ package com.teamtrack.controller;
 
 import com.teamtrack.dto.RegisterRequest;
 import com.teamtrack.entity.User;
-import com.teamtrack.entity.UserRole;
 import com.teamtrack.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +28,7 @@ public class AuthController {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(UserRole.USER); // Default role
+        user.setRole(User.Role.USER); // Default role
 
         userRepository.save(user);
 
