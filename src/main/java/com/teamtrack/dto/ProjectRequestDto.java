@@ -19,6 +19,7 @@ public class ProjectRequestDto {
     @Size(max = 500, message = "Description cannot exceed 500 characters")
     private String description;
 
-    @NotNull(message = "Owner ID cannot be null")
+    // Optional: Only needed when updating project owner
+    // During creation, the authenticated user is automatically set as owner
     private Long ownerId;
 }

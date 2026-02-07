@@ -66,12 +66,8 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
 
-        // Validate new owner exists if owner is being changed
-        if (project.getOwner() != null && !project.getOwner().getId().equals(dto.getOwnerId())) {
-            User newOwner = userRepository.findById(dto.getOwnerId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getOwnerId()));
-            project.setOwner(newOwner);
-        } else if (project.getOwner() == null) {
+        // Only update owner if ownerId is provided
+        if (dto.getOwnerId() != null) {
             User newOwner = userRepository.findById(dto.getOwnerId())
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getOwnerId()));
             project.setOwner(newOwner);
