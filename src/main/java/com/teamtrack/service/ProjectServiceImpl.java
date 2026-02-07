@@ -29,9 +29,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public ProjectResponseDto createProject(ProjectRequestDto dto) {
-        // Validate owner exists
-        User owner = userRepository.findById(dto.getOwnerId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getOwnerId()));
+        // Get current authenticated user
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication()
+                .getName();
+        User owner = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
 
         Project project = new Project();
         project.setName(dto.getName());
